@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Что будем строить?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .images-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .image-card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .image-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+        
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+        }
+        
+        .emoji-wrapper {
+            height: 300px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        #aquapark-emoji {
+            background: linear-gradient(to bottom, #87CEEB, #00BFFF);
+        }
+        
+        #aquapark-emoji:hover {
+            background: linear-gradient(to bottom, #76b9d6, #00a8e8);
+        }
+        
+        #zoo-emoji {
+            background: linear-gradient(to bottom, #90EE90, #32CD32);
+        }
+        
+        #zoo-emoji:hover {
+            background: linear-gradient(to bottom, #7ed67e, #28b828);
+        }
+        
+        .emoji {
+            font-size: 180px;
+            transition: transform 0.5s ease;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .emoji-wrapper:hover .emoji {
+            transform: scale(1.2) rotate(5deg);
+        }
+        
+        .counter {
+            padding: 25px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eaeaea;
+            min-height: 140px;
+        }
+        
+        .counter-value {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        
+        .counter-value.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .clicked {
+            animation: pulse 0.5s ease;
+            color: #e74c3c;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .counter-label {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        
+        .counter-placeholder {
+            font-size: 1.2rem;
+            color: #aaa;
+            font-style: italic;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .instructions p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background-color: #ffeaa7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .reset-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .reset-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .reset-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .question {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .images-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .counter-value {
+                font-size: 3rem;
+            }
+            
+            .emoji {
+                font-size: 140px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .emoji {
+                font-size: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Что будем строить?</h1>
+            <p class="subtitle">Выберите, на что хотите потратить бюджет города:</p>
+            <div class="question">Аквапарк или Зоопарк?</div>
+        </header>
+        
+        <div class="images-container">
+            <!-- Карточка с аквапарком -->
+            <div class="image-card">
+                <div class="card-header">
+                    <h2>Аквапарк</h2>
+                </div>
+                <div class="emoji-wrapper" id="aquapark-emoji">
+                    <div class="emoji" id="aquapark-emoji-icon">💧</div>
+                </div>
+                <div class="counter">
+                    <div class="counter-placeholder" id="aquapark-placeholder">Нажмите на каплю, чтобы проголосовать</div>
+                    <div class="counter-value" id="aquapark-counter">0</div>
+                    <div class="counter-label">голосов за аквапарк</div>
+                </div>
+            </div>
+            
+            <!-- Карточка с зоопарком -->
+            <div class="image-card">
+                <div class="card-header">
+                    <h2>Зоопарк</h2>
+                </div>
+                <div class="emoji-wrapper" id="zoo-emoji">
+                    <div class="emoji" id="zoo-emoji-icon">🐯</div>
+                </div>
+                <div class="counter">
+                    <div class="counter-placeholder" id="zoo-placeholder">Нажмите на тигра, чтобы проголосовать</div>
+                    <div class="counter-value" id="zoo-counter">0</div>
+                    <div class="counter-label">голосов за зоопарк</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h3>Как работает голосование</h3>
+            <p>1. Нажмите на <span class="highlight">каплю воды 💧</span>, чтобы проголосовать за строительство аквапарка.</p>
+            <p>2. Нажмите на <span class="highlight">тигра 🐯</span>, чтобы проголосовать за строительство зоопарка.</p>
+            <p>3. Вы можете голосовать <span class="highlight">неограниченное количество раз</span> за любой проект.</p>
+            <p>4. Счетчики показывают, сколько голосов набрал каждый проект.</p>
+            <p>5. Используйте кнопку сброса, чтобы начать голосование заново.</p>
+        </div>
+        
+        <div class="reset-container">
+            <button class="reset-btn" id="reset-btn">Сбросить все голоса</button>
+        </div>
+        
+        <div class="instructions" style="margin-top: 20px;">
+            <h3>Текущие результаты</h3>
+            <div id="results" style="text-align: center; font-size: 1.2rem; padding: 10px;">
+                <!-- Результаты будут отображаться здесь -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>Голосование за проект развития города</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация счетчиков
+            let aquaparkCounter = 0;
+            let zooCounter = 0;
+            
+            // Скрываем счетчики изначально
+            document.getElementById('aquapark-counter').style.display = 'none';
+            document.getElementById('zoo-counter').style.display = 'none';
+            
+            // Функция для показа счетчика при первом нажатии
+            function showCounter(counterId, placeholderId) {
+                const counterElement = document.getElementById(counterId);
+                const placeholderElement = document.getElementById(placeholderId);
+                
+                // Показываем счетчик, скрываем плейсхолдер
+                placeholderElement.style.display = 'none';
+                counterElement.style.display = 'block';
+                
+                // Анимация появления
+                setTimeout(() => {
+                    counterElement.classList.add('show');
+                }, 10);
+            }
+            
+            // Функция для обновления счетчика
+            function updateCounter(counterId, value, isFirstClick) {
+                const counterElement = document.getElementById(counterId);
+                counterElement.textContent = value;
+                
+                // Если это первое нажатие, показываем счетчик
+                if (isFirstClick) {
+                    const placeholderId = counterId.replace('-counter', '-placeholder');
+                    showCounter(counterId, placeholderId);
+                }
+                
+                // Анимация при обновлении
+                counterElement.classList.add('clicked');
+                setTimeout(() => {
+                    counterElement.classList.remove('clicked');
+                }, 500);
+            }
+            
+            // Функция для обновления результатов
+            function updateResults() {
+                const total = aquaparkCounter + zooCounter;
+                let resultsHTML = '';
+                
+                if (total === 0) {
+                    resultsHTML = '<p>Пока нет голосов. Будьте первым, кто проголосует!</p>';
+                } else {
+                    const aquaparkPercent = total > 0 ? Math.round((aquaparkCounter / total) * 100) : 0;
+                    const zooPercent = total > 0 ? Math.round((zooCounter / total) * 100) : 0;
+                    
+                    resultsHTML = `
+                        <p>Всего голосов: <strong>${total}</strong></p>
+                        <p>Аквапарк: <strong>${aquaparkCounter}</strong> голосов (${aquaparkPercent}%)</p>
+                        <p>Зоопарк: <strong>${zooCounter}</strong> голосов (${zooPercent}%)</p>
+                        <p style="margin-top: 15px; font-weight: bold;">
+                            ${aquaparkCounter > zooCounter ? '🏆 Лидирует аквапарк!' : zooCounter > aquaparkCounter ? '🏆 Лидирует зоопарк!' : '🏆 Ничья!'}
+                        </p>
+                    `;
+                }
+                
+                document.getElementById('results').innerHTML = resultsHTML;
+            }
+            
+            // Обработчик кликов для аквапарка
+            document.getElementById('aquapark-emoji').addEventListener('click', function() {
+                const isFirstClick = aquaparkCounter === 0;
+                aquaparkCounter++;
+                updateCounter('aquapark-counter', aquaparkCounter, isFirstClick);
+                
+                // Анимация эмодзи
+                const emoji = document.getElementById('aquapark-emoji-icon');
+                emoji.style.transform = 'scale(1.4) rotate(-10deg)';
+                setTimeout(() => {
+                    emoji.style.transform = '';
+                }, 300);
+                
+                // Обновление результатов
+                updateResults();
+            });
+            
+            // Обработчик кликов для зоопарка
+            document.getElementById('zoo-emoji').addEventListener('click', function() {
+                const isFirstClick = zooCounter === 0;
+                zooCounter++;
+                updateCounter('zoo-counter', zooCounter, isFirstClick);
+                
+                // Анимация эмодзи
+                const emoji = document.getElementById('zoo-emoji-icon');
+                emoji.style.transform = 'scale(1.4) rotate(10deg)';
+                setTimeout(() => {
+                    emoji.style.transform = '';
+                }, 300);
+                
+                // Обновление результатов
+                updateResults();
+            });
+            
+            // Обработчик сброса счетчиков
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                if (confirm("Вы уверены, что хотите сбросить все голоса?")) {
+                    // Сбрасываем счетчики
+                    aquaparkCounter = 0;
+                    zooCounter = 0;
+                    
+                    // Скрываем счетчики и показываем плейсхолдеры
+                    document.getElementById('aquapark-counter').style.display = 'none';
+                    document.getElementById('aquapark-counter').classList.remove('show');
+                    document.getElementById('aquapark-placeholder').style.display = 'flex';
+                    
+                    document.getElementById('zoo-counter').style.display = 'none';
+                    document.getElementById('zoo-counter').classList.remove('show');
+                    document.getElementById('zoo-placeholder').style.display = 'flex';
+                    
+                    // Обновляем тексты счетчиков (они скрыты, но значения обновляются)
+                    document.getElementById('aquapark-counter').textContent = '0';
+                    document.getElementById('zoo-counter').textContent = '0';
+                    
+                    // Обновление результатов
+                    updateResults();
+                    
+                    // Анимация кнопки
+                    this.classList.add('clicked');
+                    setTimeout(() => {
+                        this.classList.remove('clicked');
+                    }, 500);
+                }
+            });
+            
+            // Добавление анимации при наведении на кнопку сброса
+            document.getElementById('reset-btn').addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px)';
+            });
+            
+            document.getElementById('reset-btn').addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+            
+            // Первоначальное обновление результатов
+            updateResults();
+            
+            // Случайная анимация эмодзи каждые 10 секунд
+            setInterval(() => {
+                const emojis = [document.getElementById('aquapark-emoji-icon'), document.getElementById('zoo-emoji-icon')];
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                randomEmoji.style.transform = 'scale(1.3) rotate(5deg)';
+                setTimeout(() => {
+                    randomEmoji.style.transform = '';
+                }, 800);
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
